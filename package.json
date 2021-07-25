@@ -1,0 +1,19 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "hexlet rss lvl3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilyabro2000/frontend-project-lvl3.git"
+  },
+  "author": "Aliev Ilya <alieff.ilya@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilyabro2000/frontend-project-lvl3/issues"
+  },
+  "homepage": "https://github.com/ilyabro2000/frontend-project-lvl3#readme"
+}
