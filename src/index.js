@@ -14,7 +14,6 @@ const app = () => {
         if (resolve) {
           watchedState.data.feeds.push(urlData);
           watchedState.form.isValid = true;
-          watchedState.form.isValid = null;
         }
       })
       .catch((err) => {

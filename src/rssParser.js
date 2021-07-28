@@ -1,11 +1,14 @@
-import axios from 'axios';
+import _ from 'lodash';
 
 export default (url) => {
-  axios(url)
-    .then((doc) => {
-      const parser = new DOMParser();
-      const resolve = parser.parseFromString(doc.data, 'application/xml');
-      console.log(resolve);
-    })
-    .catch(() => console.log('Добавлен невалидный URL'));
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(url, 'application/xml');
+  const feedTitle = doc.querySelector('title').textContent;
+  const feedDescription = doc.querySelector('description').textContent;
+  const id = _.uniqueId();
+  return {
+    feedTitle,
+    feedDescription,
+    id,
+  };
 };
