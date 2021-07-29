@@ -8,8 +8,14 @@ const feedback = document.querySelector('.feedback');
 const rssForm = document.querySelector('form');
 const feedsContainer = document.querySelector('.feeds');
 
-const renderFeed = (data) => {
-  const getParsedData = axios(data).then((resolve) => rssParser(resolve.data));
+const renderFeed = (url) => {
+  const getParsedData = fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(url)}`)
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error('Невалидный запрос');
+    })
+    .then((data) => rssParser(data.contents));
+
   if (feedsContainer.childNodes.length === 0) {
     const feedMaintitle = document.createElement('h2');
     feedMaintitle.textContent = 'Фиды';
@@ -49,12 +55,12 @@ const watchedState = onChange(state, (path, value) => {
         feedback.className = 'feedback m-0 position-absolute small text-success';
         input.className = 'form-control w-100 is';
         feedback.textContent = 'RSS успешно загружен';
+        rssForm.reset();
       }
       break;
     default:
       break;
   }
-  rssForm.reset();
   input.focus();
 });
 export default watchedState;
