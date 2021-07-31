@@ -1,12 +1,20 @@
 import * as yup from 'yup';
-import _ from 'lodash';
 import rssParser from './rssParser';
 
 export default (url, feeds) => {
+  const isDuplicate = (collection, element) => {
+    if (collection.length === 0) {
+      return false;
+    }
+    const duplicateItem = collection.filter((item) => item.url === element);
+    if (duplicateItem.length === 0) return false;
+    return true;
+  };
+
   const schema = yup.string().url();
   const validInputUrl = schema.validate(url)
     .then((validUrl) => {
-      if (_.includes(feeds, url)) {
+      if (isDuplicate(feeds, validUrl)) {
         throw new Error('RSS уже добавлен');
       } else {
         return validUrl;

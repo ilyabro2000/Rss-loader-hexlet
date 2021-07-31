@@ -3,12 +3,27 @@ import _ from 'lodash';
 export default (url) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(url, 'application/xml');
+
   const feedTitle = doc.querySelector('title').textContent;
   const feedDescription = doc.querySelector('description').textContent;
-  const id = _.uniqueId();
-  return {
+
+  const items = doc.querySelectorAll('item');
+  const data = {
     feedTitle,
     feedDescription,
-    id,
+    posts: [],
   };
+  items.forEach((item) => {
+    const postTitle = item.querySelector('title').textContent;
+    const postDescription = item.querySelector('description').textContent;
+    const link = item.querySelector('link').textContent;
+    const id = _.uniqueId();
+    data.posts.push({
+      postTitle,
+      postDescription,
+      link,
+      id,
+    });
+  });
+  return data;
 };

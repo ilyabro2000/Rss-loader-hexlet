@@ -1,53 +1,90 @@
-import axios from 'axios';
 import onChange from 'on-change';
 import state from './state.js';
-import rssParser from './rssParser';
 
 const input = document.querySelector('input');
 const feedback = document.querySelector('.feedback');
 const rssForm = document.querySelector('form');
 const feedsContainer = document.querySelector('.feeds');
+const postsContainer = document.querySelector('.posts');
 
-const renderFeed = (url) => {
-  const getParsedData = fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(url)}`)
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error('Невалидный запрос');
-    })
-    .then((data) => rssParser(data.contents));
-
+const renderFeeds = (value) => {
   if (feedsContainer.childNodes.length === 0) {
     const feedMaintitle = document.createElement('h2');
     feedMaintitle.textContent = 'Фиды';
     feedsContainer.prepend(feedMaintitle);
     const list = document.createElement('ul');
     feedsContainer.append(list);
+    list.classList.add('feeds-List');
   }
-  const list = document.querySelector('ul');
-  getParsedData.then((feed) => {
-    const listItem = document.createElement('li');
-    const feedTitle = document.createElement('h3');
-    feedTitle.textContent = feed.feedTitle;
+  const list = document.querySelector('.feeds-List');
+  const listItem = document.createElement('li');
+  const feedTitle = document.createElement('h3');
+  feedTitle.textContent = value.feedTitle;
 
-    const description = document.createElement('p');
-    description.textContent = feed.feedDescription;
+  const description = document.createElement('p');
+  description.textContent = value.feedDescription;
+  list.append(listItem);
+  listItem.append(feedTitle);
+  listItem.append(description);
+};
+
+const renderPosts = (value) => {
+  if (postsContainer.childNodes.length === 0) {
+    const postsMainTitle = document.createElement('h2');
+    postsMainTitle.textContent = 'Посты';
+    postsContainer.prepend(postsMainTitle);
+
+    const list = document.createElement('ul');
+    postsContainer.append(list);
+    list.classList.add('posts-List');
+  }
+  const list = document.querySelector('.posts-List');
+  value.forEach((item) => {
+    const itemTitle = document.createElement('a');
+    itemTitle.textContent = item.postTitle;
+    itemTitle.href = item.link;
+    itemTitle.target = '_blanc';
+    itemTitle.dataset.id = item.id;
+
+    const btnToModal = document.createElement('button');
+    btnToModal.textContent = 'Просмотр';
+    btnToModal.type = 'button';
+    btnToModal.dataset.bsToggle = 'modal';
+    btnToModal.dataset.target = '#modal';
+    btnToModal.className = 'btn btn-primary';
+    btnToModal.dataset.id = item.id;
+
+    const modalTitle = document.querySelector('.modal-title');
+    modalTitle.textContent = item.title;
+
+    const modalDescription = document.querySelector('.modal-body');
+    modalDescription.textContent = item.description;
+
+    const btnToLink = document.querySelector('.btn-to-link');
+    btnToLink.href = item.link;
+
+    const listItem = document.createElement('li');
+    listItem.append(itemTitle);
+    listItem.append(btnToModal);
+    listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0';
     list.append(listItem);
-    listItem.append(feedTitle);
-    listItem.append(description);
   });
 };
 
 const watchedState = onChange(state, (path, value) => {
   switch (path) {
     case 'data.feeds':
-      console.log(value);
-      renderFeed(value[0]);
+      renderFeeds(value[value.length - 1]);
+      break;
+
+    case 'data.posts':
+      renderPosts(value);
       break;
 
     case 'form.errors':
       feedback.className = 'feedback m-0 position-absolute small text-danger';
       input.className = 'form-control w-100 is-invalid';
-      feedback.textContent = value;
+      feedback.textContent = value.message;
       break;
 
     case 'form.isValid':
