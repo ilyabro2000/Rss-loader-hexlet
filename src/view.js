@@ -46,28 +46,31 @@ const renderPosts = (value) => {
     itemTitle.target = '_blanc';
     itemTitle.dataset.id = item.id;
 
+    const listItem = document.createElement('li');
+    listItem.append(itemTitle);
+    listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0';
+    list.append(listItem);
+
     const btnToModal = document.createElement('button');
     btnToModal.textContent = 'Просмотр';
     btnToModal.type = 'button';
     btnToModal.dataset.bsToggle = 'modal';
     btnToModal.dataset.bsTarget = '#modal';
-    btnToModal.className = 'btn btn-outline-primary btn-sm';
-
-    const modalTitle = document.querySelector('.modal-title');
-    modalTitle.textContent = item.postTitle;
-
-    const modalDescription = document.querySelector('.modal-body');
-    modalDescription.textContent = item.postDescription;
-
-    const btnToLink = document.querySelector('.btn-to-link');
-    btnToLink.href = item.link;
-
-    const listItem = document.createElement('li');
-    listItem.append(itemTitle);
+    btnToModal.className = 'btn btn-outline-primary btn-sm btn-to-modal';
+    btnToModal.dataset.id = item.id;
     listItem.append(btnToModal);
-    listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0';
-    list.append(listItem);
   });
+};
+
+const fillModal = (title, description, link) => {
+  const modalTitle = document.querySelector('.modal-title');
+  modalTitle.textContent = title;
+
+  const modalDescription = document.querySelector('.modal-body');
+  modalDescription.textContent = description;
+
+  const btnToLink = document.querySelector('.btn-to-link');
+  btnToLink.href = link;
 };
 
 const watchedState = onChange(state, (path, value) => {
@@ -99,4 +102,4 @@ const watchedState = onChange(state, (path, value) => {
   }
   input.focus();
 });
-export default watchedState;
+export { watchedState, fillModal };
