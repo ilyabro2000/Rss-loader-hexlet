@@ -50,15 +50,14 @@ const renderPosts = (value) => {
     btnToModal.textContent = 'Просмотр';
     btnToModal.type = 'button';
     btnToModal.dataset.bsToggle = 'modal';
-    btnToModal.dataset.target = '#modal';
-    btnToModal.className = 'btn btn-primary';
-    btnToModal.dataset.id = item.id;
+    btnToModal.dataset.bsTarget = '#modal';
+    btnToModal.className = 'btn btn-outline-primary btn-sm';
 
     const modalTitle = document.querySelector('.modal-title');
-    modalTitle.textContent = item.title;
+    modalTitle.textContent = item.postTitle;
 
     const modalDescription = document.querySelector('.modal-body');
-    modalDescription.textContent = item.description;
+    modalDescription.textContent = item.postDescription;
 
     const btnToLink = document.querySelector('.btn-to-link');
     btnToLink.href = item.link;
