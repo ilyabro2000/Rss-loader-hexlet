@@ -1,6 +1,7 @@
 export default {
+  modalContent: {},
   form: {
-    isValid: null,
+    process: null,
     errors: null,
   },
   data: {

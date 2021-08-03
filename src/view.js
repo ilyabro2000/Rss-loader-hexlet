@@ -48,7 +48,8 @@ const renderPosts = (value) => {
 
     const listItem = document.createElement('li');
     listItem.append(itemTitle);
-    listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0';
+    listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0 fw-bold';
+
     list.append(listItem);
 
     const btnToModal = document.createElement('button');
@@ -60,6 +61,15 @@ const renderPosts = (value) => {
     btnToModal.dataset.id = item.id;
     listItem.append(btnToModal);
   });
+};
+
+const editReadPost = (post) => {
+  if (post.status === 'read') {
+    const attribute = `[data-id='${post.id}']`;
+    const readPost = document.querySelector(`${attribute}`);
+    readPost.classList.remove('fw-bold');
+    readPost.classList.add('fw-normal');
+  }
 };
 
 const fillModal = (title, description, link) => {
@@ -81,21 +91,35 @@ const watchedState = onChange(state, (path, value) => {
 
     case 'data.posts':
       renderPosts(value);
+      value.map((item) => editReadPost(item));
       break;
 
-    case 'form.errors':
-      feedback.className = 'feedback m-0 position-absolute small text-danger';
-      input.className = 'form-control w-100 is-invalid';
-      feedback.textContent = value.message;
-      break;
-
-    case 'form.isValid':
-      if (value) {
+    case 'form.process':
+      if (value === 'success') {
         feedback.className = 'feedback m-0 position-absolute small text-success';
         input.className = 'form-control w-100 is';
         feedback.textContent = 'RSS успешно загружен';
         rssForm.reset();
+        input.disabled = false;
+        watchedState.form.process = null;
+      } else if (value === 'waiting') {
+        feedback.textContent = 'Ожидание ответа...';
+        feedback.className = 'feedback m-0 position-absolute small text-warning';
+        input.disabled = true;
+        watchedState.form.process = null;
+        input.className = 'form-control w-100 border-warning';
+      } else if (value === 'error') {
+        feedback.className = 'feedback m-0 position-absolute small text-danger';
+        input.className = 'form-control w-100 is-invalid';
+        feedback.textContent = watchedState.form.errors.message;
+        input.disabled = false;
+        watchedState.form.process = null;
       }
+      break;
+    case 'modalContent':
+      fillModal(watchedState.modalContent.title,
+        watchedState.modalContent.description,
+        watchedState.modalContent.linkPost);
       break;
     default:
       break;

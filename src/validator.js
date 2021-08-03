@@ -11,10 +11,10 @@ export default (url, feeds) => {
     return true;
   };
 
-  const schema = yup.string().url();
+  const schema = yup.string().url('Ссылка должна быть валидным URL');
   const validInputUrl = schema.validate(url)
     .then((validUrl) => {
-      if (isDuplicate(feeds, validUrl)) {
+      if (isDuplicate(feeds, validUrl) === true) {
         throw new Error('RSS уже добавлен');
       } else {
         return validUrl;

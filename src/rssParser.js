@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-export default (url) => {
+export default (xml) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(url, 'application/xml');
+  const doc = parser.parseFromString(xml, 'application/xml');
 
   const feedTitle = doc.querySelector('title').textContent;
   const feedDescription = doc.querySelector('description').textContent;
@@ -23,6 +23,7 @@ export default (url) => {
       postDescription,
       link,
       id,
+      status: 'unread',
     });
   });
   return data;
