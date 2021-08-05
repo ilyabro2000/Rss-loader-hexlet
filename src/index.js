@@ -30,14 +30,8 @@ const updatePosts = (feeds) => {
   });
 };
 
-const app = () => {
-  document.addEventListener('DOMContentLoaded', () => {
-    i18next.init(initObj);
-    const [detectedLanguage] = i18next.languages;
-    watchedState.userLanguage = detectedLanguage;
-  });
-
-  const rssForm = document.querySelector('form');
+const rssForm = document.querySelector('form');
+const rssBtnHandler = () => {
   rssForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -59,8 +53,10 @@ const app = () => {
         watchedState.form.process = 'error';
       });
   });
+};
 
-  const posts = document.querySelector('.posts');
+const posts = document.querySelector('.posts');
+const postBtnHandler = () => {
   posts.addEventListener('click', (e) => {
     if (e.target.className.includes('btn-to-modal')) {
       const id = e.target.getAttribute('data-id');
@@ -82,5 +78,16 @@ const app = () => {
       watchedState.data.posts = readPost;
     }
   });
+};
+
+const app = () => {
+  document.addEventListener('DOMContentLoaded', () => {
+    i18next.init(initObj);
+    const [detectedLanguage] = i18next.languages;
+    watchedState.userLanguage = detectedLanguage;
+  });
+
+  rssBtnHandler();
+  postBtnHandler();
 };
 export default app;
