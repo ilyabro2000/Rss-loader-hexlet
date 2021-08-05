@@ -65,8 +65,7 @@ const renderPosts = (value) => {
 
 const editReadPost = (post) => {
   if (post.status === 'read') {
-    const attribute = `[data-id='${post.id}']`;
-    const readPost = document.querySelector(`${attribute}`);
+    const readPost = document.querySelector(`[data-id='${post.id}']`);
     readPost.classList.remove('fw-bold');
     readPost.classList.add('fw-normal');
   }

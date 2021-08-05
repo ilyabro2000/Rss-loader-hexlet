@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import rssParser from './rssParser';
 
 export default (url, feeds) => {
   const isDuplicate = (collection, element) => {
@@ -19,16 +18,6 @@ export default (url, feeds) => {
       } else {
         return validUrl;
       }
-    })
-    .then((validUrl) => fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(validUrl)}`))
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error('Невалидный запрос');
-    })
-    .then((data) => rssParser(data.contents))
-    .then(() => url)
-    .catch(() => {
-      throw new Error('Ссылка должна быть валидным URL');
     });
   return validInputUrl;
 };

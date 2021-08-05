@@ -3,6 +3,21 @@ import rssParser from './rssParser.js';
 import { watchedState } from './view.js';
 
 const app = () => {
+  const updatePosts = (feeds) => {
+    feeds.forEach((feed) => {
+      fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${feed.url}`)
+        .then((response) => {
+          if (response.ok) return response.json();
+          throw new Error('Ошибка сети');
+        })
+        .then((xml) => {
+          const parsedRss = rssParser(xml.contents);
+          watchedState.data.posts = parsedRss.posts;
+          setTimeout(() => updatePosts(feeds), 5000);
+        });
+    });
+  };
+
   const rssForm = document.querySelector('form');
   rssForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -11,18 +26,18 @@ const app = () => {
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
     validator(urlData, watchedState.data.feeds)
-      .then((resolve) => fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(resolve)}`))
+      .then((url) => fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(url)}`))
       .then((response) => {
         if (response.ok) return response.json();
-        watchedState.form.errors = 'Невалидный запрос';
-        throw new Error('Невалидный запрос');
+        throw new Error('Ошибка сети');
       })
-      .then((data) => rssParser(data.contents))
-      .then((data) => {
-        const { feedTitle, feedDescription } = data;
+      .then((rssData) => {
+        const parsedXml = rssParser(rssData.contents);
+        const { feedTitle, feedDescription } = parsedXml;
         watchedState.data.feeds.push({ feedTitle, feedDescription, url: urlData });
-        watchedState.data.posts = data.posts;
+        watchedState.data.posts = parsedXml.posts;
         watchedState.form.process = 'success';
+        updatePosts(watchedState.data.feeds);
       })
       .catch((err) => {
         watchedState.form.errors = err;
