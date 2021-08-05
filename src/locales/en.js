@@ -9,6 +9,7 @@ export default {
     },
     feeds: 'Feeds',
     posts: 'Posts',
+    waiting: 'Wait for response...',
     errors: {
       url: 'Must be valid url',
       doubleUrl: 'Rss already exists',

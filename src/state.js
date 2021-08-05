@@ -1,4 +1,5 @@
 export default {
+  userLanguage: 'en',
   modalContent: {},
   form: {
     process: null,

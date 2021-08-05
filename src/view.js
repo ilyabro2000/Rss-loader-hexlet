@@ -1,5 +1,6 @@
 import onChange from 'on-change';
 import state from './state.js';
+import { i18next } from './locales/i18next';
 
 const input = document.querySelector('input');
 const feedback = document.querySelector('.feedback');
@@ -10,7 +11,7 @@ const postsContainer = document.querySelector('.posts');
 const renderFeeds = (value) => {
   if (feedsContainer.childNodes.length === 0) {
     const feedMaintitle = document.createElement('h2');
-    feedMaintitle.textContent = 'Фиды';
+    feedMaintitle.textContent = i18next.t('Фиды');
     feedsContainer.prepend(feedMaintitle);
     const list = document.createElement('ul');
     feedsContainer.append(list);
@@ -31,7 +32,7 @@ const renderFeeds = (value) => {
 const renderPosts = (value) => {
   if (postsContainer.childNodes.length === 0) {
     const postsMainTitle = document.createElement('h2');
-    postsMainTitle.textContent = 'Посты';
+    postsMainTitle.textContent = i18next.t('Посты');
     postsContainer.prepend(postsMainTitle);
 
     const list = document.createElement('ul');
@@ -53,7 +54,7 @@ const renderPosts = (value) => {
     list.append(listItem);
 
     const btnToModal = document.createElement('button');
-    btnToModal.textContent = 'Просмотр';
+    btnToModal.textContent = i18next.t('Просмотр');
     btnToModal.type = 'button';
     btnToModal.dataset.bsToggle = 'modal';
     btnToModal.dataset.bsTarget = '#modal';
@@ -97,12 +98,12 @@ const watchedState = onChange(state, (path, value) => {
       if (value === 'success') {
         feedback.className = 'feedback m-0 position-absolute small text-success';
         input.className = 'form-control w-100 is';
-        feedback.textContent = 'RSS успешно загружен';
+        feedback.textContent = i18next.t('RSS успешно загружен');
         rssForm.reset();
         input.disabled = false;
         watchedState.form.process = null;
       } else if (value === 'waiting') {
-        feedback.textContent = 'Ожидание ответа...';
+        feedback.textContent = i18next.t('Ожидание ответа...');
         feedback.className = 'feedback m-0 position-absolute small text-warning';
         input.disabled = true;
         watchedState.form.process = null;
@@ -110,7 +111,7 @@ const watchedState = onChange(state, (path, value) => {
       } else if (value === 'error') {
         feedback.className = 'feedback m-0 position-absolute small text-danger';
         input.className = 'form-control w-100 is-invalid';
-        feedback.textContent = watchedState.form.errors.message;
+        feedback.textContent = i18next.t(watchedState.form.errors.message);
         input.disabled = false;
         watchedState.form.process = null;
       }

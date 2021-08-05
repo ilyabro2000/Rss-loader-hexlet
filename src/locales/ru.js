@@ -9,6 +9,7 @@ export default {
     },
     feeds: 'Фиды',
     posts: 'Посты',
+    waiting: 'Ожидание ответа...',
     errors: {
       url: 'Ссылка должна быть валидным URL',
       doubleUrl: 'RSS уже существует',

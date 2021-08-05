@@ -1,18 +1,36 @@
+import _ from 'lodash';
 import validator from './validator.js';
 import rssParser from './rssParser.js';
 import { watchedState } from './view.js';
+import { i18next, initObj } from './locales/i18next.js';
 
 const app = () => {
+  document.addEventListener('DOMContentLoaded', () => {
+    i18next.init(initObj);
+    const [detectedLanguage] = i18next.languages;
+    watchedState.userLanguage = detectedLanguage;
+  });
+
+  const getNewPosts = (oldPosts, newPosts) => _.differenceBy(newPosts, oldPosts, 'title');
+
+  const getProxyUrl = (url) => {
+    const promise = fetch(`https://hexlet-allorigins.herokuapp.com/disableCache=true&get?url=${url}`)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error('Ошибка сети');
+      });
+    return promise;
+  };
+
   const updatePosts = (feeds) => {
     feeds.forEach((feed) => {
-      fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${feed.url}`)
-        .then((response) => {
-          if (response.ok) return response.json();
-          throw new Error('Ошибка сети');
-        })
+      getProxyUrl(feed.url)
         .then((xml) => {
           const parsedRss = rssParser(xml.contents);
-          watchedState.data.posts = parsedRss.posts;
+          console.log(parsedRss.posts);
+          const newPost = getNewPosts(watchedState.data.posts, parsedRss.posts);
+          console.log(newPost);
+          if (newPost.length > 0) watchedState.data.posts.push(newPost);
           setTimeout(() => updatePosts(feeds), 5000);
         });
     });
@@ -26,11 +44,7 @@ const app = () => {
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
     validator(urlData, watchedState.data.feeds)
-      .then((url) => fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${encodeURIComponent(url)}`))
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error('Ошибка сети');
-      })
+      .then((url) => getProxyUrl(url))
       .then((rssData) => {
         const parsedXml = rssParser(rssData.contents);
         const { feedTitle, feedDescription } = parsedXml;
