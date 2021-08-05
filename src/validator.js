@@ -10,7 +10,7 @@ export default (url, feeds) => {
     return true;
   };
 
-  const schema = yup.string().url('Ссылка должна быть валидным URL');
+  const schema = yup.string().min(1, 'Не должно быть пустым').url('Ссылка должна быть валидным URL');
   const validInputUrl = schema.validate(url)
     .then((validUrl) => {
       if (isDuplicate(feeds, validUrl) === true) {
