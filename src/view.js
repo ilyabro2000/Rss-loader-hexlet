@@ -86,6 +86,26 @@ const fillModal = (title, description, link) => {
   btnToLink.href = link;
 };
 
+const renderForm = (value, form, errors) => {
+  if (value === 'success') {
+    feedback.className = 'feedback m-0 position-absolute small text-success';
+    input.className = 'form-control w-100 is';
+    feedback.textContent = i18next.t('RSS успешно загружен');
+    rssForm.reset();
+    input.disabled = false;
+  } else if (value === 'waiting') {
+    feedback.textContent = i18next.t('Ожидание ответа...');
+    feedback.className = 'feedback m-0 position-absolute small text-warning';
+    input.disabled = true;
+    input.className = 'form-control w-100 border-warning';
+  } else if (value === 'error') {
+    feedback.className = 'feedback m-0 position-absolute small text-danger';
+    input.className = 'form-control w-100 is-invalid';
+    feedback.textContent = i18next.t(errors.message);
+    input.disabled = false;
+  }
+};
+
 const watchedState = onChange(state, (path, value) => {
   switch (path) {
     case 'data.feeds':
@@ -98,26 +118,8 @@ const watchedState = onChange(state, (path, value) => {
       break;
 
     case 'form.process':
-      if (value === 'success') {
-        feedback.className = 'feedback m-0 position-absolute small text-success';
-        input.className = 'form-control w-100 is';
-        feedback.textContent = i18next.t('RSS успешно загружен');
-        rssForm.reset();
-        input.disabled = false;
-        watchedState.form.process = null;
-      } else if (value === 'waiting') {
-        feedback.textContent = i18next.t('Ожидание ответа...');
-        feedback.className = 'feedback m-0 position-absolute small text-warning';
-        input.disabled = true;
-        watchedState.form.process = null;
-        input.className = 'form-control w-100 border-warning';
-      } else if (value === 'error') {
-        feedback.className = 'feedback m-0 position-absolute small text-danger';
-        input.className = 'form-control w-100 is-invalid';
-        feedback.textContent = i18next.t(watchedState.form.errors.message);
-        input.disabled = false;
-        watchedState.form.process = null;
-      }
+      renderForm(value, watchedState.form, watchedState.form.errors);
+      watchedState.form.process = null;
       break;
     case 'modalContent':
       fillModal(watchedState.modalContent.title,
