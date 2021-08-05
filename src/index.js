@@ -21,11 +21,10 @@ const updatePosts = (feeds) => {
       .then((xml) => {
         const parsedRss = rssParser(xml.contents);
         const newPosts = getNewPosts(parsedRss.posts, watchedState.data.posts);
-        console.log(newPosts);
         newPosts.forEach((post) => {
           if (post) watchedState.data.posts.pop(post);
         });
-        setTimeout(() => updatePosts(feeds), 5000);
+        setTimeout(() => updatePosts(feeds), 100000000000);
       });
   });
 };

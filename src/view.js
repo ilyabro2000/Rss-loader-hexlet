@@ -8,39 +8,42 @@ const rssForm = document.querySelector('form');
 const feedsContainer = document.querySelector('.feeds');
 const postsContainer = document.querySelector('.posts');
 
-const renderFeeds = (value) => {
-  if (feedsContainer.childNodes.length === 0) {
+const renderSection = (value) => {
+  if (value === 'feed') {
     const feedMaintitle = document.createElement('h2');
     feedMaintitle.textContent = i18next.t('Фиды');
     feedsContainer.prepend(feedMaintitle);
     const list = document.createElement('ul');
     feedsContainer.append(list);
     list.classList.add('feeds-List');
+  } else {
+    const postsMainTitle = document.createElement('h2');
+    postsMainTitle.textContent = i18next.t('Посты');
+    postsContainer.prepend(postsMainTitle);
+    const list = document.createElement('ul');
+    postsContainer.append(list);
+    list.classList.add('posts-List');
   }
+};
+
+const renderFeeds = (data, value) => {
+  renderSection(value);
   const list = document.querySelector('.feeds-List');
   const listItem = document.createElement('li');
   const feedTitle = document.createElement('h3');
-  feedTitle.textContent = value.feedTitle;
+  feedTitle.textContent = data.feedTitle;
 
   const description = document.createElement('p');
-  description.textContent = value.feedDescription;
+  description.textContent = data.feedDescription;
   list.append(listItem);
   listItem.append(feedTitle);
   listItem.append(description);
 };
 
-const renderPosts = (value) => {
-  if (postsContainer.childNodes.length === 0) {
-    const postsMainTitle = document.createElement('h2');
-    postsMainTitle.textContent = i18next.t('Посты');
-    postsContainer.prepend(postsMainTitle);
-
-    const list = document.createElement('ul');
-    postsContainer.append(list);
-    list.classList.add('posts-List');
-  }
+const renderPosts = (data, value) => {
+  renderSection(value);
   const list = document.querySelector('.posts-List');
-  value.forEach((item) => {
+  data.forEach((item) => {
     const itemTitle = document.createElement('a');
     itemTitle.textContent = item.postTitle;
     itemTitle.href = item.link;
@@ -86,11 +89,11 @@ const fillModal = (title, description, link) => {
 const watchedState = onChange(state, (path, value) => {
   switch (path) {
     case 'data.feeds':
-      renderFeeds(value[value.length - 1]);
+      renderFeeds(value[value.length - 1], 'feed');
       break;
 
     case 'data.posts':
-      renderPosts(value);
+      renderPosts(value, 'posts');
       value.map((item) => editReadPost(item));
       break;
 
