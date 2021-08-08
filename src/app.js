@@ -77,8 +77,6 @@ const postBtnHandler = (target) => {
 const app = () => {
   const i18nInstance = i18next.createInstance();
   i18nInstance.init(initObj);
-  const [detectedLanguage] = i18next.languages;
-  watchedState.userLanguage = detectedLanguage;
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   rssBtnHandler(rssForm);

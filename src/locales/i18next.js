@@ -3,9 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import ru from './ru.json';
 
 const initObj = {
-  fallbackLng: 'ru',
-  load: 'languageOnly',
-  whitelist: ['en', 'ru'],
+  lng: 'ru',
   debug: false,
   resources: {
     ru,
