@@ -75,11 +75,10 @@ const postBtnHandler = (target) => {
 };
 
 const app = () => {
-  document.addEventListener('DOMContentLoaded', () => {
-    i18next.init(initObj);
-    const [detectedLanguage] = i18next.languages;
-    watchedState.userLanguage = detectedLanguage;
-  });
+  const i18nInstance = i18next.createInstance();
+  i18nInstance.init(initObj);
+  const [detectedLanguage] = i18next.languages;
+  watchedState.userLanguage = detectedLanguage;
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   rssBtnHandler(rssForm);
