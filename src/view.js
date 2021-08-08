@@ -3,13 +3,9 @@ import state from './state.js';
 import { i18next } from './locales/i18next';
 import getNewPosts from './utils.js';
 
-const input = document.querySelector('input');
-const feedback = document.querySelector('.feedback');
-const rssForm = document.querySelector('form');
-const feedsContainer = document.querySelector('.feeds');
-const postsContainer = document.querySelector('.posts');
-
 const renderSection = () => {
+  const feedsContainer = document.querySelector('.feeds');
+  const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
   feedMaintitle.textContent = i18next.t('Фиды');
   feedsContainer.prepend(feedMaintitle);
@@ -24,6 +20,7 @@ const renderSection = () => {
 };
 
 const renderFeeds = (data) => {
+  const feedsContainer = document.querySelector('.feeds');
   const list = feedsContainer.querySelector('ul');
   const listItem = document.createElement('li');
   const feedTitle = document.createElement('h3');
@@ -38,6 +35,7 @@ const renderFeeds = (data) => {
 
 const renderPosts = (posts, oldPosts) => {
   const newPosts = getNewPosts(posts, oldPosts);
+  const postsContainer = document.querySelector('.posts');
   newPosts.reverse()
     .forEach((newPost) => {
       const listPosts = postsContainer.querySelector('ul');
@@ -84,6 +82,9 @@ const fillModal = (title, description, link) => {
 };
 
 const renderForm = (value, errors) => {
+  const feedback = document.querySelector('.feedback');
+  const input = document.querySelector('input');
+  const rssForm = document.querySelector('form');
   if (value === 'success') {
     feedback.className = 'feedback m-0 position-absolute small text-success';
     input.className = 'form-control w-100 is';
@@ -129,6 +130,7 @@ const watchedState = onChange(state, (path, value, prevValue) => {
     default:
       break;
   }
+  const input = document.querySelector('input');
   input.focus();
 });
 export { watchedState, fillModal };
