@@ -97,7 +97,6 @@ const renderForm = (value, errors) => {
     input.disabled = true;
     input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
-    console.log(errors);
     feedback.className = 'feedback m-0 position-absolute small text-danger';
     input.className = 'form-control w-100 is-invalid';
     feedback.textContent = i18next.t(errors.message);
