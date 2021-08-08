@@ -25,9 +25,8 @@ const updatePosts = (feed) => {
   promise.then(() => setTimeout(updatePosts, 5000, feed));
 };
 
-const rssBtnHandler = () => {
-  const rssForm = document.querySelector('form');
-  rssForm.addEventListener('submit', (e) => {
+const rssBtnHandler = (target) => {
+  target.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     watchedState.form.process = 'waiting';
@@ -51,9 +50,8 @@ const rssBtnHandler = () => {
   });
 };
 
-const postBtnHandler = () => {
-  const posts = document.querySelector('.posts');
-  posts.addEventListener('click', (e) => {
+const postBtnHandler = (target) => {
+  target.addEventListener('click', (e) => {
     if (e.target.className.includes('btn-to-modal')) {
       const id = e.target.getAttribute('data-id');
       const postProxy = watchedState.data.posts.filter((item) => (item.id === id));
@@ -82,8 +80,9 @@ const app = () => {
     const [detectedLanguage] = i18next.languages;
     watchedState.userLanguage = detectedLanguage;
   });
-
-  rssBtnHandler();
-  postBtnHandler();
+  const posts = document.querySelector('.posts');
+  const rssForm = document.querySelector('form');
+  rssBtnHandler(rssForm);
+  postBtnHandler(posts);
 };
 export default app;
