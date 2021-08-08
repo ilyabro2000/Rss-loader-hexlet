@@ -1,20 +1,18 @@
 import onChange from 'on-change';
 import state from './state.js';
-import { i18next, initObj } from './locales/i18next';
 import getNewPosts from './utils.js';
 
 const renderSection = () => {
-  i18next.init(initObj);
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
-  feedMaintitle.textContent = i18next.t('Фиды');
+  feedMaintitle.textContent = 'Фиды';
   feedsContainer.prepend(feedMaintitle);
   const listFeeds = document.createElement('ul');
   feedsContainer.append(listFeeds);
 
   const postsMainTitle = document.createElement('h2');
-  postsMainTitle.textContent = i18next.t('Посты');
+  postsMainTitle.textContent = 'Посты';
   postsContainer.prepend(postsMainTitle);
   const listPosts = document.createElement('ul');
   postsContainer.append(listPosts);
@@ -39,7 +37,6 @@ const renderPosts = (posts, oldPosts) => {
   const postsContainer = document.querySelector('.posts');
   newPosts.reverse()
     .forEach((newPost) => {
-      i18next.init(initObj);
       const listPosts = postsContainer.querySelector('ul');
       const itemTitle = document.createElement('a');
       itemTitle.textContent = newPost.postTitle;
@@ -54,7 +51,7 @@ const renderPosts = (posts, oldPosts) => {
       listPosts.prepend(listItem);
 
       const btnToModal = document.createElement('button');
-      btnToModal.textContent = i18next.t('Просмотр');
+      btnToModal.textContent = 'Просмотр';
       btnToModal.type = 'button';
       btnToModal.dataset.bsToggle = 'modal';
       btnToModal.dataset.bsTarget = '#modal';
@@ -84,25 +81,24 @@ const fillModal = (title, description, link) => {
 };
 
 const renderForm = (value, errors) => {
-  i18next.init(initObj);
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('input');
   const rssForm = document.querySelector('form');
   if (value === 'success') {
     feedback.className = 'feedback m-0 position-absolute small text-success';
     input.className = 'form-control w-100 is';
-    feedback.textContent = i18next.t('RSS успешно загружен');
+    feedback.textContent = 'RSS успешно загружен';
     rssForm.reset();
     input.disabled = false;
   } else if (value === 'waiting') {
-    feedback.textContent = i18next.t('Ожидание ответа...');
+    feedback.textContent = 'Ожидание ответа...';
     feedback.className = 'feedback m-0 position-absolute small text-warning';
     input.disabled = true;
     input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
     feedback.className = 'feedback m-0 position-absolute small text-danger';
     input.className = 'form-control w-100 is-invalid';
-    feedback.textContent = i18next.t(errors.message);
+    feedback.textContent = errors.message;
     input.disabled = false;
   }
 };
