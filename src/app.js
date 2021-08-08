@@ -29,7 +29,6 @@ const rssBtnHandler = (target) => {
   target.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    watchedState.form.process = 'waiting';
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
     validator(urlData, watchedState.data.feeds)
