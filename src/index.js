@@ -1,31 +1,30 @@
-import _ from 'lodash';
+import axios from 'axios';
 import validator from './validator.js';
 import rssParser from './rssParser.js';
+import getNewPosts from './utils.js';
 import { watchedState } from './view.js';
 import { i18next, initObj } from './locales/i18next.js';
-
-const getNewPosts = (oldPosts, newPosts) => _.differenceBy(newPosts, oldPosts, 'postTitle');
+import state from './state.js';
 
 const getProxyUrl = (url) => {
-  const promise = fetch(`https://hexlet-allorigins.herokuapp.com/get?url=${url}&disableCache=true`)
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error('Ошибка сети');
-    });
-  return promise;
+  const proxyURL = new URL('https://hexlet-allorigins.herokuapp.com/get');
+  proxyURL.searchParams.set('disableCache', 'true');
+  proxyURL.searchParams.set('url', url);
+  return proxyURL;
 };
 
 const updatePosts = (feeds) => {
   feeds.forEach((feed) => {
-    getProxyUrl(feed.url)
-      .then((xml) => {
-        const parsedRss = rssParser(xml.contents);
-        const newPosts = getNewPosts(parsedRss.posts, watchedState.data.posts);
-        newPosts.forEach((post) => {
-          if (post) watchedState.data.posts.pop(post);
-        });
-        setTimeout(() => updatePosts(feeds), 100000000000);
+    const proxiedUrl = getProxyUrl(feed.url);
+    const promise = axios.get(proxiedUrl)
+      .then((response) => {
+        console.log(new Date());
+        const { posts } = rssParser(response.data.contents);
+        const oldPosts = state.data.posts;
+        const newPosts = getNewPosts(posts, oldPosts);
+        watchedState.data.posts = [...newPosts, ...oldPosts];
       });
+    promise.then(() => setTimeout(updatePosts, 5000, feeds));
   });
 };
 
@@ -39,13 +38,14 @@ const rssBtnHandler = () => {
     const urlData = Object.fromEntries(formData).url;
     validator(urlData, watchedState.data.feeds)
       .then((url) => getProxyUrl(url))
-      .then((rssData) => {
-        const parsedXml = rssParser(rssData.contents);
-        const { feedTitle, feedDescription } = parsedXml;
+      .then((proxiedUrl) => axios.get(proxiedUrl))
+      .then((response) => {
+        const parsedXml = rssParser(response.data.contents);
+        const { feedTitle, feedDescription, posts } = parsedXml;
         watchedState.data.feeds.push({ feedTitle, feedDescription, url: urlData });
-        watchedState.data.posts = parsedXml.posts;
+        watchedState.data.posts = [...watchedState.data.posts, ...posts];
         watchedState.form.process = 'success';
-        updatePosts(watchedState.data.feeds);
+        setTimeout(updatePosts, 5000, watchedState.data.feeds);
       })
       .catch((err) => {
         watchedState.form.errors = err;
@@ -68,9 +68,9 @@ const postBtnHandler = () => {
 
       const readPost = watchedState.data.posts.map((item) => {
         if (item.id === id) {
-          const tmpItem = item;
-          tmpItem.status = 'read';
-          return tmpItem;
+          const editItem = item;
+          editItem.status = 'read';
+          return editItem;
         }
         return item;
       });
