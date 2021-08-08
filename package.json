@@ -20,7 +20,7 @@
     "verbose": true,
     "testURL": "http://localhost/"
   },
-  "main": "src/index.js",
+  "main": "src/app.js",
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/eslint-parser": "^7.14.7",
