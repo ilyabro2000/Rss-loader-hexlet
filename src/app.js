@@ -25,8 +25,8 @@ const updatePosts = (feed) => {
   promise.then(() => setTimeout(updatePosts, 5000, feed));
 };
 
-const rssForm = document.querySelector('form');
 const rssBtnHandler = () => {
+  const rssForm = document.querySelector('form');
   rssForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -51,8 +51,8 @@ const rssBtnHandler = () => {
   });
 };
 
-const posts = document.querySelector('.posts');
 const postBtnHandler = () => {
+  const posts = document.querySelector('.posts');
   posts.addEventListener('click', (e) => {
     if (e.target.className.includes('btn-to-modal')) {
       const id = e.target.getAttribute('data-id');
