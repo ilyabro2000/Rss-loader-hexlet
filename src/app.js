@@ -10,7 +10,6 @@ const getProxyUrl = (url) => {
   const proxyURL = new URL('https://hexlet-allorigins.herokuapp.com/get');
   proxyURL.searchParams.set('disableCache', 'true');
   proxyURL.searchParams.set('url', url);
-  console.log(proxyURL.href);
   return proxyURL.href;
 };
 
@@ -75,8 +74,7 @@ const postBtnHandler = (target) => {
 };
 
 const app = () => {
-  const i18nInstance = i18next.createInstance();
-  i18nInstance.init(initObj);
+  i18next.init(initObj);
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   rssBtnHandler(rssForm);

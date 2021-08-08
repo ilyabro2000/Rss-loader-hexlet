@@ -1,9 +1,10 @@
 import onChange from 'on-change';
 import state from './state.js';
-import { i18next } from './locales/i18next';
+import { i18next, initObj } from './locales/i18next';
 import getNewPosts from './utils.js';
 
 const renderSection = () => {
+  i18next.init(initObj);
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
@@ -38,6 +39,7 @@ const renderPosts = (posts, oldPosts) => {
   const postsContainer = document.querySelector('.posts');
   newPosts.reverse()
     .forEach((newPost) => {
+      i18next.init(initObj);
       const listPosts = postsContainer.querySelector('ul');
       const itemTitle = document.createElement('a');
       itemTitle.textContent = newPost.postTitle;
@@ -82,6 +84,7 @@ const fillModal = (title, description, link) => {
 };
 
 const renderForm = (value, errors) => {
+  i18next.init(initObj);
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('input');
   const rssForm = document.querySelector('form');
