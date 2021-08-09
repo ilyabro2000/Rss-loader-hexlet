@@ -3,6 +3,7 @@ import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import { watchedState } from './view.js';
+import { i18next, initObj } from './locales/i18next.js';
 import state from './state.js';
 
 const getProxyUrl = (url) => {
@@ -30,6 +31,7 @@ const rssBtnHandler = (target) => {
     const formData = new FormData(e.target);
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
+    watchedState.form.process = 'waiting';
     validator(urlData, watchedState.data.feeds)
       .then((url) => getProxyUrl(url))
       .then((proxiedUrl) => axios.get(proxiedUrl))
@@ -48,6 +50,17 @@ const rssBtnHandler = (target) => {
   });
 };
 
+const readPost = (posts, id) => {
+  posts.map((item) => {
+    if (item.id === id) {
+      const editItem = item;
+      editItem.status = 'read';
+      return editItem;
+    }
+    return item;
+  });
+};
+
 const postBtnHandler = (target) => {
   target.addEventListener('click', (e) => {
     if (e.target.className.includes('btn-to-modal')) {
@@ -58,21 +71,16 @@ const postBtnHandler = (target) => {
       const description = post.postDescription;
       const linkPost = post.link;
       watchedState.modalContent = { title, description, linkPost };
-
-      const readPost = watchedState.data.posts.map((item) => {
-        if (item.id === id) {
-          const editItem = item;
-          editItem.status = 'read';
-          return editItem;
-        }
-        return item;
-      });
-      watchedState.data.posts = readPost;
+      readPost(watchedState.data.posts, id);
+    } else if (e.target.className.includes('item-title-link')) {
+      const id = e.target.getAttribute('data-id');
+      readPost(watchedState.data.posts, id);
     }
   });
 };
 
 const app = () => {
+  i18next.init(initObj);
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   rssBtnHandler(rssForm);

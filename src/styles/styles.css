@@ -1,0 +1,79 @@
+.bg-dark-theme {
+  background-color: rgb(57, 56, 56);
+}
+
+.bg-light-theme {
+  background-color: rgb(255, 250, 242);
+
+}
+
+.bg-content-theme {
+  background-color: rgb(255, 255, 255);
+}
+
+.text-danger-custom {
+  color: rgb(214, 53, 1);
+}
+
+.text-success-custom {
+  color: rgb(81, 160, 108);
+}
+
+.text-warning-custom {
+  color: rgb(247, 210, 117);
+}
+
+.main-title {
+  color: #fdc073;
+}
+
+.btn {
+  background-color: #fd9460;
+  color:rgb(255, 255, 255);
+}
+
+.btn:hover {
+  background-color: #ff7c3c;
+  color:rgb(251, 243, 228);
+}
+
+.list-group-item {
+  min-height: 60px;
+  border-radius: 3px;
+  color: #568dca;
+}
+
+.item-title-link {
+  color: #568dca;
+}
+
+.read {
+  color: rgb(214, 53, 1);
+  opacity: .4;
+}
+
+.btn-to-modal {
+  background-color: rgb(255, 255, 255);
+  border-radius: 15px;
+  border-color: #568dca;
+  color: #568dca;
+  width: 85px;
+  height: 40px;
+}
+
+.btn-to-modal:hover {
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(81, 160, 108);
+  color:rgb(81, 160, 108);
+}
+
+@media (max-width: 544px) {
+  .list-group-item {
+    flex-direction: column;
+    align-items: start;
+  }
+  .btn-to-modal {
+    width: 30vw;
+    margin-top: 5vh;
+  }
+}

@@ -1,18 +1,19 @@
 import onChange from 'on-change';
 import state from './state.js';
+import { i18next } from './locales/i18next';
 import getNewPosts from './utils.js';
 
 const renderSection = () => {
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
-  feedMaintitle.textContent = 'Фиды';
+  feedMaintitle.textContent = i18next.t('Фиды');
   feedsContainer.prepend(feedMaintitle);
   const listFeeds = document.createElement('ul');
   feedsContainer.append(listFeeds);
 
   const postsMainTitle = document.createElement('h2');
-  postsMainTitle.textContent = 'Посты';
+  postsMainTitle.textContent = i18next.t('Посты');
   postsContainer.prepend(postsMainTitle);
   const listPosts = document.createElement('ul');
   postsContainer.append(listPosts);
@@ -22,6 +23,7 @@ const renderFeeds = (data) => {
   const feedsContainer = document.querySelector('.feeds');
   const list = feedsContainer.querySelector('ul');
   const listItem = document.createElement('li');
+  listItem.className = 'm-0, border-bottom';
   const feedTitle = document.createElement('h3');
   feedTitle.textContent = data.feedTitle;
 
@@ -39,6 +41,7 @@ const renderPosts = (posts, oldPosts) => {
     .forEach((newPost) => {
       const listPosts = postsContainer.querySelector('ul');
       const itemTitle = document.createElement('a');
+      itemTitle.classList.add('item-title-link');
       itemTitle.textContent = newPost.postTitle;
       itemTitle.href = newPost.link;
       itemTitle.target = '_blanc';
@@ -46,16 +49,17 @@ const renderPosts = (posts, oldPosts) => {
 
       const listItem = document.createElement('li');
       listItem.append(itemTitle);
-      listItem.className = 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0 fw-bold';
+      listItem.className = 'list-group-item d-flex justify-content-between align-items-middle border-1 border-end-1 fw-bold ';
 
       listPosts.prepend(listItem);
+      listPosts.classList.add('p-0');
 
       const btnToModal = document.createElement('button');
-      btnToModal.textContent = 'Просмотр';
+      btnToModal.textContent = i18next.t('Просмотр');
       btnToModal.type = 'button';
       btnToModal.dataset.bsToggle = 'modal';
       btnToModal.dataset.bsTarget = '#modal';
-      btnToModal.className = 'btn btn-outline-primary btn-sm btn-to-modal';
+      btnToModal.className = 'btn btn-outline-primary btn-sm btn-to-modal btn-to-modal';
       btnToModal.dataset.id = newPost.id;
       listItem.append(btnToModal);
     });
@@ -65,7 +69,7 @@ const editReadPost = (post) => {
   if (post.status === 'read') {
     const readPost = document.querySelector(`[data-id='${post.id}']`);
     readPost.classList.remove('fw-bold');
-    readPost.classList.add('fw-normal');
+    readPost.classList.add('fw-normal', 'read');
   }
 };
 
@@ -85,21 +89,22 @@ const renderForm = (value, errors) => {
   const input = document.querySelector('input');
   const rssForm = document.querySelector('form');
   if (value === 'success') {
-    feedback.className = 'feedback m-0 position-absolute small text-success';
+    feedback.className = 'feedback mt-1 position-absolute small text-success-custom';
     input.className = 'form-control w-100 is';
-    feedback.textContent = 'RSS успешно загружен';
+    feedback.textContent = i18next.t('RSS успешно загружен');
     rssForm.reset();
     input.disabled = false;
   } else if (value === 'waiting') {
-    feedback.textContent = 'Ожидание ответа...';
-    feedback.className = 'feedback m-0 position-absolute small text-warning';
+    feedback.textContent = i18next.t('Ожидание ответа...');
+    feedback.className = 'feedback mt-1 position-absolute small text-warning-custom';
     input.disabled = true;
     input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
-    feedback.className = 'feedback m-0 position-absolute small text-danger';
+    feedback.className = 'feedback mt-1 position-absolute small text-danger-custom';
     input.className = 'form-control w-100 is-invalid';
-    feedback.textContent = errors.message;
+    feedback.textContent = i18next.t(errors.message);
     input.disabled = false;
+    input.focus();
   }
 };
 
@@ -128,7 +133,5 @@ const watchedState = onChange(state, (path, value, prevValue) => {
     default:
       break;
   }
-  const input = document.querySelector('input');
-  input.focus();
 });
 export { watchedState, fillModal };
