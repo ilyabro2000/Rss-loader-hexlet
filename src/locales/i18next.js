@@ -11,5 +11,6 @@ const initObj = {
 };
 
 i18next.use(LanguageDetector);
+i18next.init(initObj);
 
 export { i18next, initObj };

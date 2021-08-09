@@ -85,7 +85,6 @@ const postBtnHandler = (target) => {
 };
 
 const app = () => {
-  
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
