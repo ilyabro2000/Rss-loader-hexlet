@@ -1,7 +1,7 @@
 import onChange from 'on-change';
 import state from './state.js';
-import { i18next } from './locales/i18next';
 import getNewPosts from './utils.js';
+import { i18next } from './locales/i18next.js';
 
 const renderSection = () => {
   const feedsContainer = document.querySelector('.feeds');
