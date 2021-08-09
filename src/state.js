@@ -4,6 +4,7 @@ export default {
   form: {
     process: null,
     errors: null,
+    value: null,
   },
   data: {
     feeds: [],

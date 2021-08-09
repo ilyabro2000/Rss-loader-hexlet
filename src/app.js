@@ -61,6 +61,12 @@ const readPost = (posts, id) => {
   });
 };
 
+const exampleUrlHandler = (item) => {
+  item.addEventListener('click', (e) => {
+    watchedState.form.value = e.target.textContent;
+  });
+};
+
 const postBtnHandler = (target) => {
   target.addEventListener('click', (e) => {
     if (e.target.className.includes('btn-to-modal')) {
@@ -83,7 +89,9 @@ const app = () => {
   i18next.init(initObj);
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
+  const exampleUrl = document.querySelectorAll('.example-url');
   rssBtnHandler(rssForm);
   postBtnHandler(posts);
+  exampleUrl.forEach((url) => exampleUrlHandler(url));
 };
 export default app;

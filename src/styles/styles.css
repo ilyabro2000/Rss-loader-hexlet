@@ -27,6 +27,7 @@
   color: #fdc073;
 }
 
+
 .btn {
   background-color: #fd9460;
   color:rgb(255, 255, 255);
@@ -52,6 +53,10 @@
   opacity: .4;
 }
 
+.head-content {
+  overflow-x: hidden;
+}
+
 .btn-to-modal {
   background-color: rgb(255, 255, 255);
   border-radius: 15px;
@@ -75,5 +80,15 @@
   .btn-to-modal {
     width: 30vw;
     margin-top: 5vh;
+  }
+  .rss-form-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-btn {
+    margin-top: 10px;
+    width: 110px;
+    height: 15px;
+    font-size: 14px;
   }
 }

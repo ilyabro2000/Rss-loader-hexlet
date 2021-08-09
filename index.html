@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,11 +25,11 @@
   <main class="flex-grow-1 bg-light-theme">
     <section class="container-fluid bg-dark-theme p-5">
       <div class="row">
-        <div class="col-md-10 col-lg-8 mx-auto text-white">
+        <div class="col-md-10 col-lg-8 mx-auto text-white head-content">
           <h1 class="display-3 mb-0 main-title">RSS агрегатор</h1>
           <p class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
           <form id="rss-form" action="" class="rss-form text-body">
-            <div class="row">
+            <div class="row rss-form-wrapper">
               <div class="col">
                 <div class="form-floating">
                   <input id="url-input" autofocus required name="url" aria-label="url" class="form-control w-100" placeholder="ссылка RSS">
@@ -37,13 +37,13 @@
                 </div>
               </div>
               <div class="col-auto">
-                <button type="submit" aria-label="add" class="h-100 btn btn-lg px-sm-5">Добавить</button>
+                <button type="submit" aria-label="add" class="h-100 btn btn-lg px-sm-5 form-btn">Добавить</button>
               </div>
             </div>
           </form>
           <p class="feedback mb-2 small"></p>
-          <p class="mt-4 mb-0 text-muted">Пример: https://career.habr.com/vacancies/rss?division_ids%5B%5D=1&amp;divisions%5B%5D=frontend&amp;page=1&amp;per_page=25</p>
-          <p class="mt-2 mb-0 text-muted">Пример с обновлением каждые 30 секунд: http://lorem-rss.herokuapp.com/feed?unit=second&interval=30</p>
+          <p class="mt-4 mb-0 text-muted">Пример: <a href="#" class="mt-4 mb-0 text-muted example-url">https://career.habr.com/vacancies/rss?division_ids%5B%5D=1&amp;divisions%5B%5D=frontend&amp;page=1&amp;per_page=25</a></p>
+          <p class="mt-2 mb-0 text-muted">Пример с обновлением каждые 30 секунд: <a href="#" class="mt-4 mb-0 text-muted example-url">http://lorem-rss.herokuapp.com/feed?unit=second&interval=30</a></p>
         </div>
       </div>
     </section>

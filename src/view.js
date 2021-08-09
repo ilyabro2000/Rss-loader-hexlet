@@ -73,6 +73,11 @@ const editReadPost = (post) => {
   }
 };
 
+const changeInputvalue = (value) => {
+  const input = document.querySelector('input');
+  input.value = value;
+};
+
 const fillModal = (title, description, link) => {
   const modalTitle = document.querySelector('.modal-title');
   modalTitle.textContent = title;
@@ -129,6 +134,9 @@ const watchedState = onChange(state, (path, value, prevValue) => {
       fillModal(watchedState.modalContent.title,
         watchedState.modalContent.description,
         watchedState.modalContent.linkPost);
+      break;
+    case 'form.value':
+      changeInputvalue(value);
       break;
     default:
       break;
