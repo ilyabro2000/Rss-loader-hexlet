@@ -3,7 +3,6 @@ import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import { watchedState } from './view.js';
-import { i18next, initObj } from './locales/i18next.js';
 import state from './state.js';
 
 const getProxyUrl = (url) => {
@@ -86,7 +85,7 @@ const postBtnHandler = (target) => {
 };
 
 const app = () => {
-  i18next.init(initObj);
+  
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
