@@ -4,7 +4,7 @@ export default (xml) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'application/xml');
   if (doc.querySelector('parsererror')) {
-    throw new Error('Ресурс не содержит валидный RSS');
+    throw new Error('Ошибка сети');
   }
   const feedTitle = doc.querySelector('title').textContent;
   const feedDescription = doc.querySelector('description').textContent;
