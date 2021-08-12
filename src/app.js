@@ -3,7 +3,7 @@ import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import state from './state.js';
-import watchedStateWrapper from './view.js';
+import render from './view.js';
 
 /* eslint-disable no-param-reassign */
 const getProxyUrl = (url) => {
@@ -31,6 +31,7 @@ const rssBtnHandler = (target, watchedState) => {
     const formData = new FormData(e.target);
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
+    watchedState.form.process = 'waiting';
     validator(urlData, watchedState.data.feeds)
       .then((url) => getProxyUrl(url))
       .then((proxiedUrl) => axios.get(proxiedUrl))
@@ -89,7 +90,7 @@ export default (i18next) => {
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
-  const watchedState = watchedStateWrapper(state, i18next);
+  const watchedState = render(state, i18next);
   rssBtnHandler(rssForm, watchedState);
   postBtnHandler(posts, watchedState);
   exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));

@@ -5,12 +5,12 @@ const renderSection = (i18next) => {
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
-  feedMaintitle.textContent = i18next.t('feedListHeader');
+  feedMaintitle.textContent = i18next('feedListHeader');
   feedsContainer.prepend(feedMaintitle);
   const listFeeds = document.createElement('ul');
   feedsContainer.append(listFeeds);
   const postsMainTitle = document.createElement('h2');
-  postsMainTitle.textContent = i18next.t('postListHeader');
+  postsMainTitle.textContent = i18next('postListHeader');
   postsContainer.prepend(postsMainTitle);
   const listPosts = document.createElement('ul');
   postsContainer.append(listPosts);
@@ -51,7 +51,7 @@ const renderPosts = (posts, oldPosts, i18next) => {
       listPosts.classList.add('p-0');
 
       const btnToModal = document.createElement('button');
-      btnToModal.textContent = i18next.t('postPreviewButtonLabel');
+      btnToModal.textContent = i18next('postPreviewButtonLabel');
       btnToModal.type = 'button';
       btnToModal.dataset.bsToggle = 'modal';
       btnToModal.dataset.bsTarget = '#modal';
@@ -90,18 +90,18 @@ const renderForm = (value, errors, i18next) => {
   if (value === 'success') {
     feedback.className = 'feedback mt-1 position-absolute small text-success-custom';
     input.className = 'form-control w-100 is';
-    feedback.textContent = i18next.t('messages.rssLoadedOk');
+    feedback.textContent = i18next('messages.rssLoadedOk');
     rssForm.reset();
     input.disabled = false;
   } else if (value === 'waiting') {
-    feedback.textContent = i18next.t('messages.waiting');
+    feedback.textContent = i18next('messages.waiting');
     feedback.className = 'feedback mt-1 position-absolute small text-warning-custom';
     input.disabled = true;
     input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
     feedback.className = 'feedback mt-1 position-absolute small text-danger-custom';
     input.className = 'form-control w-100 is-invalid';
-    feedback.textContent = i18next.t(errors.message);
+    feedback.textContent = i18next(errors.message);
     input.disabled = false;
     input.focus();
   }
