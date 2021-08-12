@@ -93,6 +93,11 @@ const renderForm = (value, errors, i18next) => {
     feedback.textContent = i18next.t('messages.rssLoadedOk');
     rssForm.reset();
     input.disabled = false;
+  } else if (value === 'waiting') {
+    feedback.textContent = i18next.t('messages.waiting');
+    feedback.className = 'feedback mt-1 position-absolute small text-warning-custom';
+    input.disabled = true;
+    input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
     feedback.className = 'feedback mt-1 position-absolute small text-danger-custom';
     input.className = 'form-control w-100 is-invalid';
