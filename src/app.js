@@ -14,9 +14,20 @@ const getProxyUrl = (url) => {
   return proxyURL.href;
 };
 
+const toRequest = (url) => {
+  const promise = axios.get(url)
+    .then((resolve) => {
+      if (resolve.statusText === 'OK') {
+        return resolve;
+      }
+      throw new Error('Ошибка сети');
+    });
+  return promise;
+};
+
 const updatePosts = (feed, watchedState) => {
   const proxiedUrl = getProxyUrl(feed.url);
-  const promise = axios.get(proxiedUrl)
+  const promise = toRequest(proxiedUrl)
     .then((response) => {
       const { posts } = rssParser(response.data.contents);
       const oldPosts = watchedState.data.posts;
@@ -35,7 +46,7 @@ const rssBtnHandler = (target, watchedState) => {
     watchedState.form.process = 'waiting';
     validator(urlData, watchedState.data.feeds)
       .then((url) => getProxyUrl(url))
-      .then((proxiedUrl) => axios.get(proxiedUrl))
+      .then((proxiedUrl) => toRequest(proxiedUrl))
       .then((response) => {
         const parsedXml = rssParser(response.data.contents);
         const { feedTitle, feedDescription, posts } = parsedXml;
@@ -111,6 +122,5 @@ export default () => {
       rssBtnHandler(rssForm, watchedState);
       postBtnHandler(posts, watchedState);
       exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
-      console.log(state);
     });
 };
