@@ -90,11 +90,11 @@ const postBtnHandler = (target, watchedState) => {
 
 export default () => {
   const i18nextInstance = i18next.createInstance();
-  i18nextInstance.init(options).then((t) => {
+  i18nextInstance.init(options).then((translate) => {
     const posts = document.querySelector('.posts');
     const rssForm = document.querySelector('form');
     const exampleUrl = document.querySelectorAll('.example-url');
-    const watchedState = render(state, t);
+    const watchedState = render(state, translate);
     rssBtnHandler(rssForm, watchedState);
     postBtnHandler(posts, watchedState);
     exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));

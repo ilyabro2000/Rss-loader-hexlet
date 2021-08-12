@@ -1,16 +1,16 @@
 import onChange from 'on-change';
 import getNewPosts from './utils.js';
 
-const renderSection = (i18next) => {
+const renderSection = (translate) => {
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
-  feedMaintitle.textContent = i18next('feedListHeader');
+  feedMaintitle.textContent = translate('feedListHeader');
   feedsContainer.prepend(feedMaintitle);
   const listFeeds = document.createElement('ul');
   feedsContainer.append(listFeeds);
   const postsMainTitle = document.createElement('h2');
-  postsMainTitle.textContent = i18next('postListHeader');
+  postsMainTitle.textContent = translate('postListHeader');
   postsContainer.prepend(postsMainTitle);
   const listPosts = document.createElement('ul');
   postsContainer.append(listPosts);
@@ -30,7 +30,7 @@ const renderFeeds = (data) => {
   listItem.append(description);
 };
 
-const renderPosts = (posts, oldPosts, i18next) => {
+const renderPosts = (posts, oldPosts, translate) => {
   const newPosts = getNewPosts(posts, oldPosts);
   const postsContainer = document.querySelector('.posts');
   newPosts.reverse()
@@ -51,7 +51,7 @@ const renderPosts = (posts, oldPosts, i18next) => {
       listPosts.classList.add('p-0');
 
       const btnToModal = document.createElement('button');
-      btnToModal.textContent = i18next('postPreviewButtonLabel');
+      btnToModal.textContent = translate('postPreviewButtonLabel');
       btnToModal.type = 'button';
       btnToModal.dataset.bsToggle = 'modal';
       btnToModal.dataset.bsTarget = '#modal';
@@ -83,46 +83,51 @@ const fillModal = (title, description, link) => {
   btnToLink.href = link;
 };
 
-const renderForm = (value, errors, i18next) => {
+const renderForm = (value, errors, translate) => {
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('input');
   const rssForm = document.querySelector('form');
+  const formBtn = document.querySelector('.form-btn');
   if (value === 'success') {
     feedback.className = 'feedback mt-1 position-absolute small text-success-custom';
     input.className = 'form-control w-100 is';
-    feedback.textContent = i18next('messages.rssLoadedOk');
+    feedback.textContent = translate('messages.rssLoadedOk');
     rssForm.reset();
-    input.disabled = false;
+    input.removeAttribute('readonly', true);
+    formBtn.removeAttribute('disabled', true);
   } else if (value === 'waiting') {
-    feedback.textContent = i18next('messages.waiting');
+    feedback.textContent = translate('messages.waiting');
     feedback.className = 'feedback mt-1 position-absolute small text-warning-custom';
-    input.disabled = true;
+    input.setAttribute('readonly', true);
+    formBtn.setAttribute('disabled', true);
     input.className = 'form-control w-100 border-warning';
   } else if (value === 'error') {
     feedback.className = 'feedback mt-1 position-absolute small text-danger-custom';
     input.className = 'form-control w-100 is-invalid';
-    feedback.textContent = i18next(errors.message);
+    feedback.textContent = translate(errors.message);
     input.disabled = false;
+    input.removeAttribute('readonly', true);
+    formBtn.removeAttribute('disabled', true);
     input.focus();
   }
 };
 
-export default (state, i18next) => {
+export default (state, translate) => {
   const watchedState = onChange(state, (path, value, prevValue) => {
     switch (path) {
       case 'data.feeds':
         if (watchedState.data.feeds.length === 1) {
-          renderSection(i18next);
+          renderSection(translate);
         }
         renderFeeds(value[value.length - 1]);
         break;
       case 'data.posts':
-        renderPosts(value, prevValue, i18next);
+        renderPosts(value, prevValue, translate);
         value.forEach((post) => editReadPost(post));
         break;
 
       case 'form.process':
-        renderForm(value, watchedState.form.errors, i18next);
+        renderForm(value, watchedState.form.errors, translate);
         break;
       case 'modalContent':
         fillModal(watchedState.modalContent.title,
