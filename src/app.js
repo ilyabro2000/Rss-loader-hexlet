@@ -31,7 +31,6 @@ const rssBtnHandler = (target, watchedState) => {
     const formData = new FormData(e.target);
     formData.get('url-input');
     const urlData = Object.fromEntries(formData).url;
-    watchedState.form.process = 'waiting';
     validator(urlData, watchedState.data.feeds)
       .then((url) => getProxyUrl(url))
       .then((proxiedUrl) => axios.get(proxiedUrl))
@@ -90,7 +89,6 @@ export default (i18next) => {
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
-  watchedStateWrapper(state, i18next);
   const watchedState = watchedStateWrapper(state, i18next);
   rssBtnHandler(rssForm, watchedState);
   postBtnHandler(posts, watchedState);
