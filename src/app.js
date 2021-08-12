@@ -98,5 +98,6 @@ export default () => {
     rssBtnHandler(rssForm, watchedState);
     postBtnHandler(posts, watchedState);
     exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
+    console.log(state);
   });
 };
