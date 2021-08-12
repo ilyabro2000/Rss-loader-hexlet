@@ -12,19 +12,19 @@ const getProxyUrl = (url) => {
   return proxyURL.href;
 };
 
-const updatePosts = (feed, watchedState, state) => {
+const updatePosts = (feed, watchedState) => {
   const proxiedUrl = getProxyUrl(feed.url);
   const promise = axios.get(proxiedUrl)
     .then((response) => {
       const { posts } = rssParser(response.data.contents);
-      const oldPosts = state.data.posts;
+      const oldPosts = watchedState.data.posts;
       const newPosts = getNewPosts(posts, oldPosts);
       watchedState.data.posts = [...newPosts, ...oldPosts];
     });
-  promise.then(() => setTimeout(updatePosts, 5000, feed, watchedState, state));
+  promise.then(() => setTimeout(updatePosts, 5000, feed, watchedState));
 };
 
-const rssBtnHandler = (target, watchedState, state) => {
+const rssBtnHandler = (target, watchedState) => {
   target.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -41,7 +41,7 @@ const rssBtnHandler = (target, watchedState, state) => {
         watchedState.data.posts = [...watchedState.data.posts, ...posts];
         watchedState.form.process = 'success';
         watchedState.data.feeds
-          .forEach((feed) => setTimeout(updatePosts, 5000, feed, watchedState, state));
+          .forEach((feed) => setTimeout(updatePosts, 5000, feed, watchedState));
       })
       .catch((err) => {
         watchedState.form.errors = err;
@@ -86,11 +86,12 @@ const postBtnHandler = (target, watchedState) => {
 };
 
 export default (state, i18next) => {
-  const watchedState = watchedStateWrapper(state, i18next);
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
-  rssBtnHandler(rssForm, watchedState, state);
+  const watchedState = watchedStateWrapper(state, i18next);
+  watchedStateWrapper(state, i18next);
+  rssBtnHandler(rssForm, watchedState);
   postBtnHandler(posts, watchedState);
   exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
 };
