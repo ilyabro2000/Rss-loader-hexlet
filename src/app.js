@@ -2,6 +2,7 @@ import axios from 'axios';
 import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
+import state from './state.js';
 import watchedStateWrapper from './view.js';
 
 /* eslint-disable no-param-reassign */
@@ -85,12 +86,11 @@ const postBtnHandler = (target, watchedState) => {
   });
 };
 
-export default (state, i18next) => {
+export default (i18next) => {
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
   const watchedState = watchedStateWrapper(state, i18next);
-  watchedStateWrapper(state, i18next);
   rssBtnHandler(rssForm, watchedState);
   postBtnHandler(posts, watchedState);
   exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
