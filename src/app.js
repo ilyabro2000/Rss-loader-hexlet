@@ -5,6 +5,7 @@ import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import render from './view.js';
 import options from './locales/i18next.js';
+import _ from 'lodash';
 
 /* eslint-disable no-param-reassign */
 const getProxyUrl = (url) => {
@@ -16,13 +17,8 @@ const getProxyUrl = (url) => {
 
 const toRequest = (url) => {
   const promise = axios.get(url)
-    .then((resolve) => {
-      console.log(resolve);
-      if (resolve.statusText === 'OK') {
-        return resolve;
-      }
-      throw new Error('Ошибка сети');
-    });
+    .then((resolve) => resolve)
+    .catch(() => new Error('Ошибка сети'));
   return promise;
 };
 
