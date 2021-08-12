@@ -3,7 +3,6 @@ import i18next from 'i18next';
 import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
-import state from './state.js';
 import render from './view.js';
 import options from './locales/i18next.js';
 
@@ -90,14 +89,28 @@ const postBtnHandler = (target, watchedState) => {
 
 export default () => {
   const i18nextInstance = i18next.createInstance();
-  i18nextInstance.init(options).then((translate) => {
-    const posts = document.querySelector('.posts');
-    const rssForm = document.querySelector('form');
-    const exampleUrl = document.querySelectorAll('.example-url');
-    const watchedState = render(state, translate);
-    rssBtnHandler(rssForm, watchedState);
-    postBtnHandler(posts, watchedState);
-    exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
-    console.log(state);
-  });
+  i18nextInstance.init(options)
+    .then((translate) => {
+      const state = {
+        userLanguage: 'ru',
+        modalContent: {},
+        form: {
+          process: null,
+          errors: null,
+          value: null,
+        },
+        data: {
+          feeds: [],
+          posts: [],
+        },
+      };
+      const posts = document.querySelector('.posts');
+      const rssForm = document.querySelector('form');
+      const exampleUrl = document.querySelectorAll('.example-url');
+      const watchedState = render(state, translate);
+      rssBtnHandler(rssForm, watchedState);
+      postBtnHandler(posts, watchedState);
+      exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
+      console.log(state);
+    });
 };
