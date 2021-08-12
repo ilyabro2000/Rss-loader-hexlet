@@ -90,6 +90,7 @@ export default (i18next) => {
   const posts = document.querySelector('.posts');
   const rssForm = document.querySelector('form');
   const exampleUrl = document.querySelectorAll('.example-url');
+  watchedStateWrapper(state, i18next);
   const watchedState = watchedStateWrapper(state, i18next);
   rssBtnHandler(rssForm, watchedState);
   postBtnHandler(posts, watchedState);
