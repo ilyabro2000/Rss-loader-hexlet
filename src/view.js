@@ -1,9 +1,7 @@
 import onChange from 'on-change';
-import state from './state.js';
 import getNewPosts from './utils.js';
-import { i18next } from './locales/i18next.js';
 
-const renderSection = () => {
+const renderSection = (i18next) => {
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
@@ -34,7 +32,7 @@ const renderFeeds = (data) => {
   listItem.append(description);
 };
 
-const renderPosts = (posts, oldPosts) => {
+const renderPosts = (posts, oldPosts, i18next) => {
   const newPosts = getNewPosts(posts, oldPosts);
   const postsContainer = document.querySelector('.posts');
   newPosts.reverse()
@@ -89,7 +87,7 @@ const fillModal = (title, description, link) => {
   btnToLink.href = link;
 };
 
-const renderForm = (value, errors) => {
+const renderForm = (value, errors, i18next) => {
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('input');
   const rssForm = document.querySelector('form');
@@ -113,33 +111,35 @@ const renderForm = (value, errors) => {
   }
 };
 
-const watchedState = onChange(state, (path, value, prevValue) => {
-  switch (path) {
-    case 'data.feeds':
-      if (watchedState.data.feeds.length === 1) {
-        renderSection();
-      }
-      renderFeeds(value[value.length - 1]);
-      break;
+export default (state, i18next) => {
+  const watchedState = onChange(state, (path, value, prevValue) => {
+    switch (path) {
+      case 'data.feeds':
+        if (watchedState.data.feeds.length === 1) {
+          renderSection(i18next);
+        }
+        renderFeeds(value[value.length - 1]);
+        break;
 
-    case 'data.posts':
-      renderPosts(value, prevValue);
-      value.forEach((post) => editReadPost(post));
-      break;
+      case 'data.posts':
+        renderPosts(value, prevValue, i18next);
+        value.forEach((post) => editReadPost(post));
+        break;
 
-    case 'form.process':
-      renderForm(value, watchedState.form.errors);
-      break;
-    case 'modalContent':
-      fillModal(watchedState.modalContent.title,
-        watchedState.modalContent.description,
-        watchedState.modalContent.linkPost);
-      break;
-    case 'form.value':
-      changeInputvalue(value);
-      break;
-    default:
-      break;
-  }
-});
-export { watchedState, fillModal };
+      case 'form.process':
+        renderForm(value, watchedState.form.errors, i18next);
+        break;
+      case 'modalContent':
+        fillModal(watchedState.modalContent.title,
+          watchedState.modalContent.description,
+          watchedState.modalContent.linkPost);
+        break;
+      case 'form.value':
+        changeInputvalue(value);
+        break;
+      default:
+        break;
+    }
+  });
+  return watchedState;
+};
