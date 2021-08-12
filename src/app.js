@@ -1,9 +1,11 @@
 import axios from 'axios';
+import i18next from 'i18next';
 import validator from './validator.js';
 import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import state from './state.js';
 import render from './view.js';
+import options from './locales/i18next.js';
 
 /* eslint-disable no-param-reassign */
 const getProxyUrl = (url) => {
@@ -86,12 +88,15 @@ const postBtnHandler = (target, watchedState) => {
   });
 };
 
-export default (i18next) => {
-  const posts = document.querySelector('.posts');
-  const rssForm = document.querySelector('form');
-  const exampleUrl = document.querySelectorAll('.example-url');
-  const watchedState = render(state, i18next);
-  rssBtnHandler(rssForm, watchedState);
-  postBtnHandler(posts, watchedState);
-  exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
+export default () => {
+  const i18nextInstance = i18next.createInstance();
+  i18nextInstance.init(options).then((t) => {
+    const posts = document.querySelector('.posts');
+    const rssForm = document.querySelector('form');
+    const exampleUrl = document.querySelectorAll('.example-url');
+    const watchedState = render(state, t);
+    rssBtnHandler(rssForm, watchedState);
+    postBtnHandler(posts, watchedState);
+    exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
+  });
 };
