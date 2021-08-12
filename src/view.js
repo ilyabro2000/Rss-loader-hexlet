@@ -5,13 +5,12 @@ const renderSection = (i18next) => {
   const feedsContainer = document.querySelector('.feeds');
   const postsContainer = document.querySelector('.posts');
   const feedMaintitle = document.createElement('h2');
-  feedMaintitle.textContent = i18next.t('Фиды');
+  feedMaintitle.textContent = i18next.t('feedListHeader');
   feedsContainer.prepend(feedMaintitle);
   const listFeeds = document.createElement('ul');
   feedsContainer.append(listFeeds);
-
   const postsMainTitle = document.createElement('h2');
-  postsMainTitle.textContent = i18next.t('Посты');
+  postsMainTitle.textContent = i18next.t('postListHeader');
   postsContainer.prepend(postsMainTitle);
   const listPosts = document.createElement('ul');
   postsContainer.append(listPosts);
@@ -24,7 +23,6 @@ const renderFeeds = (data) => {
   listItem.className = 'm-0, border-bottom';
   const feedTitle = document.createElement('h3');
   feedTitle.textContent = data.feedTitle;
-
   const description = document.createElement('p');
   description.textContent = data.feedDescription;
   list.append(listItem);
@@ -53,7 +51,7 @@ const renderPosts = (posts, oldPosts, i18next) => {
       listPosts.classList.add('p-0');
 
       const btnToModal = document.createElement('button');
-      btnToModal.textContent = i18next.t('Просмотр');
+      btnToModal.textContent = i18next.t('postPreviewButtonLabel');
       btnToModal.type = 'button';
       btnToModal.dataset.bsToggle = 'modal';
       btnToModal.dataset.bsTarget = '#modal';
@@ -79,10 +77,8 @@ const changeInputvalue = (value) => {
 const fillModal = (title, description, link) => {
   const modalTitle = document.querySelector('.modal-title');
   modalTitle.textContent = title;
-
   const modalDescription = document.querySelector('.modal-body');
   modalDescription.textContent = description;
-
   const btnToLink = document.querySelector('.btn-to-link');
   btnToLink.href = link;
 };
@@ -94,11 +90,11 @@ const renderForm = (value, errors, i18next) => {
   if (value === 'success') {
     feedback.className = 'feedback mt-1 position-absolute small text-success-custom';
     input.className = 'form-control w-100 is';
-    feedback.textContent = i18next.t('RSS успешно загружен');
+    feedback.textContent = i18next.t('messages.rssLoadedOk');
     rssForm.reset();
     input.disabled = false;
   } else if (value === 'waiting') {
-    feedback.textContent = i18next.t('Ожидание ответа...');
+    feedback.textContent = i18next.t('messages.waiting');
     feedback.className = 'feedback mt-1 position-absolute small text-warning-custom';
     input.disabled = true;
     input.className = 'form-control w-100 border-warning';
@@ -120,7 +116,6 @@ export default (state, i18next) => {
         }
         renderFeeds(value[value.length - 1]);
         break;
-
       case 'data.posts':
         renderPosts(value, prevValue, i18next);
         value.forEach((post) => editReadPost(post));

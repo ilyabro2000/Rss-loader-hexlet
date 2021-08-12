@@ -4,6 +4,7 @@ import rssParser from './rssParser.js';
 import getNewPosts from './utils.js';
 import watchedStateWrapper from './view.js';
 
+/* eslint-disable no-param-reassign */
 const getProxyUrl = (url) => {
   const proxyURL = new URL('https://hexlet-allorigins.herokuapp.com/get');
   proxyURL.searchParams.set('disableCache', 'true');
