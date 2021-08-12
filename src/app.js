@@ -17,7 +17,10 @@ const getProxyUrl = (url) => {
 
 const toRequest = (url) => {
   const promise = axios.get(url)
-    .then((resolve) => resolve)
+    .then((resolve) => {
+      console.log(resolve);
+      return resolve;
+    })
     .catch(() => new Error('Ошибка сети'));
   return promise;
 };
