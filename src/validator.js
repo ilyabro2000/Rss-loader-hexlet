@@ -14,7 +14,7 @@ export default (url, feeds) => {
   const validInputUrl = schema.validate(url)
     .then((validUrl) => {
       if (isDuplicate(feeds, validUrl) === true) {
-        throw new Error('RSS уже добавлен');
+        throw new Error('RSS уже существует');
       } else {
         return validUrl;
       }
