@@ -58,8 +58,7 @@ const rssBtnHandler = (target, watchedState) => {
           .forEach((feed) => setTimeout(updatePosts, 5000, feed, watchedState));
       })
       .catch((err) => {
-        console.log(err)
-        if (err.message === 'Network error') {
+        if (err.message === 'Network Error') {
           err.message = 'Ошибка сети';
         }
         watchedState.form.errors = err;
