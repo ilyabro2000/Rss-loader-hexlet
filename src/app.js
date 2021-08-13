@@ -121,9 +121,9 @@ export default () => {
       const posts = document.querySelector('.posts');
       const rssForm = document.querySelector('form');
       const exampleUrl = document.querySelectorAll('.example-url');
-      const watchedState = render(state, translate);
-      rssBtnHandler(rssForm, watchedState);
-      postBtnHandler(posts, watchedState);
-      exampleUrl.forEach((url) => exampleUrlHandler(url, watchedState));
+      const onChangeState = render(state, translate);
+      rssBtnHandler(rssForm, onChangeState);
+      postBtnHandler(posts, onChangeState);
+      exampleUrl.forEach((url) => exampleUrlHandler(url, onChangeState));
     });
 };
