@@ -18,11 +18,9 @@ const toRequest = (url) => {
   const promise = axios.get(url)
     .then((resolve) => {
       console.log(resolve);
-      if (!resolve.data.contents.includes('DOCTYPE html')) {
-        return resolve;
-      }
-      throw new Error('Ошибка сети');
-    });
+      return resolve;
+    })
+    .catch(() => new Error('Ошибка сети'));
   return promise;
 };
 
@@ -58,7 +56,10 @@ const rssBtnHandler = (target, watchedState) => {
           .forEach((feed) => setTimeout(updatePosts, 5000, feed, watchedState));
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err)
+        if (err.message === 'Network error') {
+          err.message = 'Ошибка сети';
+        }
         watchedState.form.errors = err;
         watchedState.form.process = 'error';
       });
