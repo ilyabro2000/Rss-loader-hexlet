@@ -37,7 +37,7 @@ const renderPosts = (posts, oldPosts, translate) => {
     .forEach((newPost) => {
       const listPosts = postsContainer.querySelector('ul');
       const itemTitle = document.createElement('a');
-      itemTitle.classList.add('item-title-link');
+      itemTitle.classList.add('fw-bold', 'item-title-link');
       itemTitle.textContent = newPost.postTitle;
       itemTitle.href = newPost.link;
       itemTitle.target = '_blanc';
@@ -45,7 +45,7 @@ const renderPosts = (posts, oldPosts, translate) => {
 
       const listItem = document.createElement('li');
       listItem.append(itemTitle);
-      listItem.className = 'list-group-item d-flex justify-content-between align-items-middle border-1 border-end-1 fw-bold ';
+      listItem.className = 'list-group-item d-flex justify-content-between align-items-middle border-1 border-end-1';
 
       listPosts.prepend(listItem);
       listPosts.classList.add('p-0');
